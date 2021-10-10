@@ -37,7 +37,7 @@ func InsertExpense(c *fiber.Ctx) error {
 	expense.Id = uuid.New()
 	database.Db.Create(&expense)
 
-	return c.JSON(expense)
+	return c.Status(fiber.StatusCreated).JSON(expense)
 }
 
 func DeleteExpense(c *fiber.Ctx) error {
