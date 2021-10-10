@@ -1,16 +1,29 @@
 package handlers
 
 import (
+	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"money_tracker_go/database"
 	"money_tracker_go/models"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofrs/uuid"
 )
 
 func GetExpenses(c *fiber.Ctx) error {
 	var expenses []models.Expense
 	database.Db.Find(&expenses)
 	return c.JSON(expenses)
+}
+
+func GetExpenseById(c *fiber.Ctx) error {
+	id, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err.Error()})
+	}
+	var expense models.Expense
+	result := database.Db.First(&expense, id)
+	if result.RowsAffected == 0 {
+		return fiber.NewError(fiber.StatusNotFound)
+	}
+	return c.JSON(expense)
 }
 
 func InsertExpense(c *fiber.Ctx) error {
@@ -20,11 +33,7 @@ func InsertExpense(c *fiber.Ctx) error {
 			"message": err.Error(),
 		})
 	}
-	var err error
-	expense.Id, err = uuid.NewV4()
-	if err != nil {
-		panic(err.Error())
-	}
+	expense.Id = uuid.New()
 	database.Db.Create(&expense)
 
 	return c.JSON(expense)

@@ -39,6 +39,8 @@ func main() {
 
 	apiV1.Get("/", handlers.GetExpenses)
 
+	apiV1.Get("/:id", handlers.GetExpenseById)
+
 	apiV1.Post("/", handlers.InsertExpense)
 
 	log.Fatal(app.Listen(":8000"))

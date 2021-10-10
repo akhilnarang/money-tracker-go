@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/gofiber/fiber/v2 v2.20.1
-	github.com/gofrs/uuid v4.0.0+incompatible
+	github.com/google/uuid v1.3.0
 	gorm.io/driver/postgres v1.1.2
 	gorm.io/gorm v1.21.16
 )
