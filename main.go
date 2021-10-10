@@ -43,6 +43,8 @@ func main() {
 
 	apiV1.Post("/", handlers.InsertExpense)
 
+	apiV1.Delete("/:id", handlers.DeleteExpense)
+
 	log.Fatal(app.Listen(":8000"))
 
 }

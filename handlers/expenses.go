@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"money_tracker_go/database"
@@ -37,4 +38,16 @@ func InsertExpense(c *fiber.Ctx) error {
 	database.Db.Create(&expense)
 
 	return c.JSON(expense)
+}
+
+func DeleteExpense(c *fiber.Ctx) error {
+	id, err := uuid.Parse(c.Params("id"))
+	if err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": err.Error()})
+	}
+	result := database.Db.Delete(&models.Expense{}, id)
+	if result.RowsAffected == 0 {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": fmt.Sprintf("Expense with ID %s not found", id)})
+	}
+	return c.JSON(fiber.Map{"message": fmt.Sprintf("Deleted expense with ID %s", id)})
 }
