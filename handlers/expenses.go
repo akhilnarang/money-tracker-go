@@ -22,7 +22,7 @@ func GetExpenseById(c *fiber.Ctx) error {
 	var expense models.Expense
 	result := database.Db.First(&expense, id)
 	if result.RowsAffected == 0 {
-		return fiber.NewError(fiber.StatusNotFound)
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"message": fmt.Sprintf("Expense with ID %s not found", id)})
 	}
 	return c.JSON(expense)
 }
