@@ -1,6 +1,8 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"gorm.io/driver/postgres"
@@ -10,6 +12,8 @@ import (
 	"money_tracker_go/handlers"
 	"os"
 )
+
+var port = flag.Int("port", 8000, "Port to listen on")
 
 func InitDb() {
 	var err error
@@ -27,6 +31,8 @@ func InitDb() {
 }
 
 func main() {
+	flag.Parse()
+
 	app := fiber.New(fiber.Config{AppName: "Money Tracker", Prefork: true})
 
 	app.Use(recover.New())
@@ -45,6 +51,6 @@ func main() {
 
 	apiV1.Delete("/:id", handlers.DeleteExpense)
 
-	log.Fatal(app.Listen(":8000"))
+	log.Fatal(app.Listen(fmt.Sprintf(":%d", *port)))
 
 }
