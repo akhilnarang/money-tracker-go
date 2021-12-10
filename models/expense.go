@@ -13,3 +13,9 @@ type Expense struct {
 	Created       time.Time `json:"created" gorm:"autoCreateTime"`
 	LastUpdated   time.Time `json:"last_updated" gorm:"autoUpdateTime"`
 }
+
+type ExpenseUpdate struct {
+	Description   string  `json:"description"`
+	Amount        float32 `json:"amount"`
+	PaymentMethod string  `json:"payment_method"`
+}

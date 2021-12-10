@@ -60,6 +60,8 @@ func main() {
 
 	apiV1.Delete("/:id", handlers.DeleteExpense)
 
+	apiV1.Put("/:id", handlers.UpdateExpense)
+
 	// Start our fiber app
 	log.Fatal(app.Listen(fmt.Sprintf(":%d", *port)))
 }
